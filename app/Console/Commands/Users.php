@@ -26,13 +26,24 @@ class Users extends Command
      */
     public function handle()
     {
-        $id = $this->argument('id');
-        $users = User::find($id);
-        if($users){
-            $this->line($users->toJson(JSON_PRETTY_PRINT));
+      $id = $this->argument('id');
+      if($id){
+        $user = User::find($id);
+        if($user){
+           $this->line($user->toJson(JSON_PRETTY_PRINT));
         }
-        elsE{
-            $this->error('User ID not found');
+        else{
+            $this->error("No User ID found");
         }
+      }
+      else{
+        $user = User::all();
+        if(!$user->isEmpty()){
+            $this->line($user->toJson(JSON_PRETTY_PRINT));
+        }
+        else{
+            $this->error("No Users Found");
+        }
+      }
     }
 }
