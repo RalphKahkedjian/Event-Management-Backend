@@ -20,16 +20,23 @@ class AttendeeController extends Controller
 
     public function destroy(string $id) {
         $attendee = Attendee::findOrFail($id);
-        if($attendee){
+    
+        if ($attendee) {
+            
+            if ($attendee->user) {
+                $attendee->user->delete();
+            }
+    
             $attendee->delete();
             return response()->json([
                 "status" => true,
-                "message" => "Attendee deleted successfully"
+                "message" => "Attendee and associated user deleted successfully",
+                "attendee" => $attendee
             ]);
         } else {
             return response()->json([
                 "message" => "Attendee ID not found"
-            ]);
+            ], 404);
         }
     }
 

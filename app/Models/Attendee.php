@@ -10,6 +10,11 @@ class Attendee extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'wallet'
+        'wallet',
+        'user_id'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

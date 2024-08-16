@@ -22,22 +22,25 @@ class OrganizerController extends Controller
     //     ]);
     // }
 
-    public function destroy(string $id) {
+    public function destroy(string $id){
         $organizer = Organizer::findOrFail($id);
         if($organizer){
-            $organizer->delete();
-            return response()->json([
-                "status" => true,
-                "message" => "Organizer deleted successfully",
-                "Organizer" => $organizer
-            ]);
+        if($organizer->user) {
+            $organizer->user->delete();
         }
-        else {
-            return response()->json([
-                "status" => false,
-                "message" => "Organizer ID not found"
-            ]);
-        }
+
+        $organizer->delete();
+        return response()->json([
+            "status" => true,
+            "message" => "Organizer and associated user deleted successfully",
+            "organizer" => $organizer
+        ]);
+      } else {
+        return response()->json([
+            "status" => false,
+            "message" => "Organizer ID not found"
+        ],404);
+      }
     }
 
     public function list(Request $request, $id = null) {
