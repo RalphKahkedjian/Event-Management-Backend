@@ -9,14 +9,18 @@ use Illuminate\Http\Request;
 
 class OrganizerController extends Controller
 {
-    public function store(OrganizerRequest $request) {
-        $organizer = Organizer::create($request->all());
-        return response()->json([
-            "status" => true,
-            "message" => "Organizer created successfully",
-            "Organizer" => $organizer
-        ]);
-    }
+
+    // You can  keep the store function but I used it in the AuthController directly to store
+    //depending on the role entered by the user
+    
+    // public function store(OrganizerRequest $request) {
+    //     $organizer = Organizer::create($request->all());
+    //     return response()->json([
+    //         "status" => true,
+    //         "message" => "Organizer created successfully",
+    //         "Organizer" => $organizer
+    //     ]);
+    // }
 
     public function destroy(string $id) {
         $organizer = Organizer::findOrFail($id);

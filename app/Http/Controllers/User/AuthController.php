@@ -6,45 +6,78 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
+use App\Models\Attendee;
+use App\Models\Organizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //function for user registration
-    public function register(RegistrationRequest $request) {
-        $user = new User();
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->password = Hash::make($request->get('password'));
-        $user->age = $request->get('age');
 
-        $user->save();
+    public function register(RegistrationRequest $request)
+{
+    $user = new User();
+    $user->name = $request->get('name');
+    $user->email = $request->get('email');
+    $user->password = Hash::make($request->get('password'));
+    $user->age = $request->get('age');
+    $user->role = $request->get('role');
+    $user->save();
+
+    if ($user->role === 'organizer') {
+        $organizer = new Organizer();
+        $organizer->name = $user->name;
+        $organizer->rating = 0;
+        $organizer->description = '';
+        $organizer->save();
+
         $accessToken = $user->createToken('authToken')->plainTextToken;
         return response()->json([
             "status" => true,
-            "message" => "User Registered Successfully",
+            "message" => "Organizer Registered Successfully",
             "user" => $user,
+            "organizer" => $organizer,
             "token" => $accessToken
         ]);
+        
+    } elseif ($user->role === 'attendee') {
+        $attendee = new Attendee();
+        $attendee->name = $user->name;
+        $attendee->wallet = 0.00;
+        $attendee->save();
+
+        $accessToken = $user->createToken('authToken')->plainTextToken;
+        return response()->json([
+            "status" => true,
+            "message" => "Attendee Registered Successfully",
+            "user" => $user,
+            "attendee" => $attendee,
+            "token" => $accessToken
+        ]);
+    } else {
+        return response()->json([
+            "status" => false,
+            "message" => "Invalid role. Role must be either 'organizer' or 'attendee'."
+        ], 400);
     }
+}
 
-    public function login(LoginRequest $request) {
-        $user = User::where('email', $request->get('email'))->first();
+    public function login(Request $request){
+        $request -> validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
 
-        if ($user && Hash::check($request->get('password'), $user->password)) {
+        $credentials = $request->only(['email', 'password']);
+        $user = User::where('email' , $credentials['email'])->first();
+        if($user && Hash::check($credentials['password'], $user->password)) {
             $accessToken = $user->createToken('authToken')->plainTextToken;
             return response()->json([
                 "status" => true,
                 "message" => "User logged in successfully",
                 "user" => $user,
-                "access_token" => $accessToken
-            ], 200);
-        } else {
-            return response()->json([
-                "status" => false,
-                "message" => "Wrong email or password"
-            ], 401);
+                "token" => $accessToken
+            ]);
         }
     }
     public function ListUsers() {

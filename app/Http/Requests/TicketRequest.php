@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistrationRequest extends FormRequest
+class TicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,11 @@ class RegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|String|min:2|max:30',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|String|min:6',
-            'age'=> 'required|integer|min:18|max:100',
-            'role' => 'required|string|in:attendee,organizer',
+            'place' => 'required|string|max:255',
+            'time' => 'required|date_format:H:i',
+            'price' => 'required|numeric|min:0',
+            'organizer_id' => 'required|exists:organizers,id',
+            'qr_code_path' => 'nullable|string|max:255',
         ];
     }
-
-    public function messages() {
-        return [
-            'role.in' => "The role should be either organizer or attendee"
-        ];
-    }
-
 }

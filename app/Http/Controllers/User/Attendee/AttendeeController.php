@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class AttendeeController extends Controller
 {
-    public function store(AttendeeRequest $request) {
-        $attendee = Attendee::create($request->all());
-        return response()->json([
-            "status" => true,
-            "message" => "Attendee created successfully",
-            "Attendee" => $attendee
-        ]);
-    }
+    // public function store(AttendeeRequest $request) {
+    //     $attendee = Attendee::create($request->all());
+    //     return response()->json([
+    //         "status" => true,
+    //         "message" => "Attendee created successfully",
+    //         "Attendee" => $attendee
+    //     ]);
+    // }
 
     public function destroy(string $id) {
         $attendee = Attendee::findOrFail($id);
