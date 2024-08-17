@@ -52,40 +52,8 @@ class TicketController extends Controller
         ], 201);
     }
 
-    public function destroy($id) {
-        $user = auth()->user();
-        if(!$user) {
-            return response()->json([
-                "status" => false,
-                "message" => "Please log in"
-            ],401);
-        }
-
-        $ticket = Ticket::find($id);
-        if(!$ticket) {
-            return response()->json([
-                "status" => false,
-                "message" => "Ticket ID not found"
-            ],404);
-        }
-
-        if($ticket->organizer_id !== $user->id) {
-            return response()->json([
-                "status" => false,
-                "message" => "You have no right to delete this ticket"
-            ],403);
-        }
-
-        $ticket->delete();
-        return response()->json([
-            "status" => true,
-            "message" => "Ticket deleted successfully",
-            "ticket" => $ticket
-        ]);
-    }
-
     public function list(Request $request) {
-        $tickets = Ticket::select('id', 'place', 'time', 'price', 'organizer_id', 'qr_code')->get();
+        $tickets = Ticket::select('id', 'place', 'time', 'price', 'spots' , 'organizer_id', 'qr_code')->get();
         
         return response()->json([
             "message" => "Listed Tickets",

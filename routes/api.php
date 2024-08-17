@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\Attendee\AttendeeController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\Booking\BookingController;
 use App\Http\Controllers\User\Organizer\OrganizerController;
 use App\Http\Controllers\User\Ticket\TicketController;
 use Illuminate\Http\Request;
@@ -25,8 +26,10 @@ Route::get('/User/Attendee/{id?}', [AttendeeController::class, 'list']);
 
 //For TICKET (CREATE, DELETE, AND GET)
 Route::middleware('auth:sanctum')->post('/User/Ticket', [TicketController::class, 'store']);
-Route::middleware('auth/sanctum')->delete('/User/Ticket/{id?}', [TicketController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/User/Ticket', [TicketController::class, 'list']);
+
+//For BOOKING (CREATE, DELETE, AND GET)
+Route::middleware('auth:sanctum')->post('/User/Booking', [BookingController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
