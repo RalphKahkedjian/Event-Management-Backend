@@ -49,7 +49,6 @@ class BookingController extends Controller
         $booking = new Booking();
         $booking->ticket_id = $request->input('ticket_id');
         $booking->attendee_id = $attendee->id;
-        $booking->spots = $request->input('spots');
         $booking->status = 'available';
         $booking->save();
 
