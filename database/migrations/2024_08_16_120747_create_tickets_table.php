@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->foreignId('organizer_id')->constrained()->onDelete('cascade');
             $table->integer('spots');
-            $table->string('qr_code')->nullable();
+            $table->string('status')->default('available');
             $table->timestamps();
 
             $table->unique(['organizer_id', 'time']);

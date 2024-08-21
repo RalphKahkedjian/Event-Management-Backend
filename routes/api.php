@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->get('/User/Ticket', [TicketController::class,
 
 //For BOOKING (CREATE, DELETE, AND GET)
 Route::middleware('auth:sanctum')->post('/User/Booking', [BookingController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/User/Booking', [BookingController::class, 'list']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

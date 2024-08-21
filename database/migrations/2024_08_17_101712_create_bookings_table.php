@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
             $table->foreignId('attendee_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('available');
             $table->timestamps();
 
             $table->unique(['ticket_id', 'attendee_id']);

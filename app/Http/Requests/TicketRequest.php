@@ -26,8 +26,7 @@ class TicketRequest extends FormRequest
             'time' => 'required|date_format:H:i',
             'price' => 'required|numeric|min:0',
             'organizer_id' => 'required|exists:organizers,id',
-            'spots' => 'required|integer|min:1',
-            'qr_code_path' => 'nullable|string|max:255',
+            'spots' => 'required|integer|min:1'
         ];
     }
 }

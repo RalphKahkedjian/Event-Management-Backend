@@ -88,6 +88,12 @@ class AuthController extends Controller
                 "token" => $accessToken
             ]);
         }
+        else {
+            return response()->json([
+                "status" => false,
+                "message" => "Incorrect email or password"
+            ],401);
+        }
     }
     public function ListUsers() {
         $users = User::all();

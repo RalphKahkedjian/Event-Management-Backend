@@ -13,8 +13,8 @@ class Ticket extends Model
         'time',
         'price',
         'spots',
+        'status',
         'organizer_id',
-        'qr_code'
     ];
 
     public function organizers() {

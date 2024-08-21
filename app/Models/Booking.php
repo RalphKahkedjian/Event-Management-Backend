@@ -12,7 +12,6 @@ class Booking extends Model
     protected $fillable = [
         'ticket_id',
         'attendee_id',
-        'status'
     ];
 
     public function attendee() {

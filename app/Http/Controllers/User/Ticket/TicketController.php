@@ -37,10 +37,18 @@ class TicketController extends Controller
             ], 404);
         }
 
-        if ($organizer->id !== $user->id) {
+        if ($user->role === 'organizer') {
+            if ($organizer->user_id !== $user->id)
+            {
+                return response()->json([
+                    "status" => false,
+                    "message" => "You are not authorized to create tickets for this organizer"
+                ], 403);
+            }
+        } else {
             return response()->json([
                 "status" => false,
-                "message" => "You are not authorized to create tickets for this organizer"
+                "message" => "You have no right to create tickets"
             ], 403);
         }
         $ticket = Ticket::create($request->validated());
@@ -53,7 +61,7 @@ class TicketController extends Controller
     }
 
     public function list(Request $request) {
-        $tickets = Ticket::select('id', 'place', 'time', 'price', 'spots' , 'organizer_id', 'qr_code')->get();
+        $tickets = Ticket::select('id', 'place', 'time', 'price', 'spots' , 'organizer_id', 'status')->get();
         
         return response()->json([
             "message" => "Listed Tickets",
