@@ -31,7 +31,7 @@ class AuthController extends Controller
             ],403);
         }
     
-        if ($user->role === 'organizer') {
+        if (strtolower($user->role) === 'organizer') {
             $organizer = new Organizer();
             $organizer->name = $user->name;
             $organizer->user_id = $user->id;
@@ -48,7 +48,7 @@ class AuthController extends Controller
                 "token" => $accessToken
             ]);
     
-        } elseif ($user->role === 'attendee') {
+        } elseif ( strtolower($user->role) === 'attendee') {
             $attendee = new Attendee();
             $attendee->name = $user->name;
             $attendee->user_id = $user->id; 
